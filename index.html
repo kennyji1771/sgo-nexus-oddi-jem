@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <!-- user-scalable eliminado para permitir zoom -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <!-- user-scalable=yes permite zoom táctil -->
   <title>SGO/P · NEXUS · Órgano Defensa Integral Parroquia Catedral</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
       height: 100vh;
       overflow: hidden;
       background-image: radial-gradient(circle at 25% 40%, rgba(0, 163, 255, 0.08) 0%, transparent 65%);
-      touch-action: pan-x pan-y; /* permite scroll pero no impide zoom manual */
+      touch-action: pan-x pan-y; /* permite desplazamiento pero no bloquea zoom */
     }
 
     .nexus-header {
@@ -87,34 +87,66 @@
       height: 100vh;
       padding-top: 70px;
       padding-bottom: 90px;
-      overflow: auto; /* permite scroll si la imagen es enorme, pero el zoom funciona */
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide-track {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      transition: transform 0.3s ease-out;
+      will-change: transform;
     }
 
     .slide-wrapper {
-      width: 90%;
-      height: 85%;
+      flex: 0 0 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #11141C;
-      border-radius: 24px;
-      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(0, 163, 255, 0.25);
-      overflow: auto; /* permitir scroll/zoom */
-      touch-action: pinch-zoom; /* explícitamente permitir zoom con pellizco */
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pinch-zoom; /* permite zoom dentro de cada slide */
     }
 
     .slide {
-      max-width: 100%;
-      max-height: 100%;
+      max-width: 90%;
+      max-height: 90%;
       width: auto;
       height: auto;
       object-fit: contain;
       background: #0F1119;
-      transition: opacity 0.2s ease;
-      /* permitir que la imagen se pueda escalar con gestos nativos del navegador */
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
       touch-action: pinch-zoom;
+    }
+
+    /* Spinner de carga */
+    .loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(0, 163, 255, 0.3);
+      border-top: 4px solid #00A3FF;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .loader.active {
+      opacity: 1;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
     .progress-bar {
@@ -129,38 +161,40 @@
       transition: width 0.2s ease-out;
     }
 
+    /* Barra de botones inferior */
     .nav-controls {
       position: fixed;
-      bottom: 28px;
+      bottom: 20px;
       left: 0;
       right: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 28px;
+      gap: 16px;
       z-index: 40;
+      flex-wrap: wrap;
+      padding: 0 16px;
     }
 
-    .nav-btn {
+    .nav-btn, .download-btn, .grid-btn, .fullscreen-btn-bottom {
       background: rgba(12, 20, 30, 0.85);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(0, 163, 255, 0.5);
       color: white;
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       border-radius: 40px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
-      font-weight: 400;
+      font-size: 22px;
       cursor: pointer;
       transition: 0.2s;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-      touch-action: manipulation; /* mejora respuesta táctil */
+      touch-action: manipulation;
     }
 
-    .nav-btn:hover {
+    .nav-btn:hover, .download-btn:hover, .grid-btn:hover, .fullscreen-btn-bottom:hover {
       background: #00A3FF;
       border-color: #00A3FF;
       transform: scale(1.05);
@@ -170,65 +204,75 @@
     .counter {
       background: rgba(8, 12, 20, 0.85);
       backdrop-filter: blur(12px);
-      padding: 8px 26px;
+      padding: 8px 20px;
       border-radius: 40px;
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1rem;
       border: 1px solid rgba(0, 163, 255, 0.4);
       box-shadow: 0 8px 18px rgba(0,0,0,0.3);
       user-select: none;
     }
 
-    .fullscreen-btn {
+    /* Panel de miniaturas (grid) */
+    .thumbnails-panel {
       position: fixed;
-      top: 80px;
-      right: 24px;
-      z-index: 60;
-      background: rgba(12, 20, 30, 0.75);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(0, 163, 255, 0.4);
-      color: #D0E5FF;
-      width: 44px;
-      height: 44px;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      cursor: pointer;
-      transition: 0.2s;
-      touch-action: manipulation;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(8, 12, 20, 0.95);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 12px;
+      display: none;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      z-index: 70;
+      border: 1px solid rgba(0, 163, 255, 0.5);
+      max-width: 90%;
+      max-height: 60%;
+      overflow-y: auto;
     }
 
-    .fullscreen-btn:hover {
-      background: #00A3FF;
-      color: #0B0E14;
+    .thumbnails-panel.active {
+      display: grid;
+    }
+
+    .thumbnail {
+      width: 70px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .thumbnail:hover, .thumbnail.active-thumb {
+      border-color: #00A3FF;
+      transform: scale(1.02);
     }
 
     .nexus-footer {
       position: fixed;
-      bottom: 16px;
-      left: 24px;
+      bottom: 12px;
+      left: 16px;
       z-index: 35;
       color: rgba(180, 210, 240, 0.6);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
-      letter-spacing: 0.4px;
       background: rgba(0,0,0,0.3);
-      padding: 4px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
       pointer-events: none;
     }
 
-    /* Ajustes responsivos */
     @media (max-width: 600px) {
       .nexus-header { padding: 8px 16px; }
       .nexus-logo { height: 30px; }
-      .presentation-title { font-size: 0.8rem; }
-      .nav-btn { width: 46px; height: 46px; font-size: 24px; }
-      .counter { padding: 6px 18px; font-size: 0.9rem; }
-      .fullscreen-btn { top: 70px; right: 16px; }
-      .slide-wrapper { width: 95%; }
+      .presentation-title { font-size: 0.75rem; }
+      .nav-btn, .download-btn, .grid-btn, .fullscreen-btn-bottom { width: 44px; height: 44px; font-size: 20px; }
+      .counter { padding: 6px 16px; font-size: 0.85rem; }
+      .thumbnail { width: 55px; height: 40px; }
     }
   </style>
 </head>
@@ -249,150 +293,243 @@
   </div>
 </header>
 
-<div class="fullscreen-btn" id="fullscreenBtn" title="Pantalla completa">⛶</div>
-
 <div class="presentation-container">
-  <div class="slide-wrapper">
-    <img class="slide" id="currentSlide" alt="Diapositiva SGO/P">
-  </div>
+  <div class="slide-track" id="slideTrack"></div>
+  <div class="loader" id="loader"></div>
 </div>
 
+<!-- Panel de miniaturas -->
+<div class="thumbnails-panel" id="thumbnailsPanel"></div>
+
+<!-- Barra inferior de controles -->
 <div class="nav-controls">
-  <div class="nav-btn" id="prevBtn">◀</div>
+  <div class="nav-btn" id="prevBtn" title="Anterior">◀</div>
   <div class="counter" id="counter">1 / 12</div>
-  <div class="nav-btn" id="nextBtn">▶</div>
+  <div class="nav-btn" id="nextBtn" title="Siguiente">▶</div>
+  <div class="fullscreen-btn-bottom" id="fullscreenBtn" title="Pantalla completa">⛶</div>
+  <div class="grid-btn" id="gridBtn" title="Miniaturas">▦</div>
+  <div class="download-btn" id="downloadSlideBtn" title="Descargar diapositiva PNG">⬇</div>
 </div>
 
 <div class="nexus-footer">NEXUS · Innovación en Gobernanza de Proyectos · ODI Parroquia Catedral</div>
 
+<!-- ENLACES DE DESCARGA COMPLETA (PDF y PPTX) - CONFIGURAR AQUÍ -->
+<div style="display: none;">
+  <!-- === INSTRUCCIONES: Coloca tus enlaces de Google Drive (o cualquier URL) en los href de abajo === -->
+  <a id="pdfDownloadLink" href="#" target="_blank">Enlace PDF</a>
+  <a id="pptxDownloadLink" href="#" target="_blank">Enlace PowerPoint</a>
+  <!-- 
+    Ejemplo:
+    <a id="pdfDownloadLink" href="https://drive.google.com/your-pdf-file" target="_blank">Enlace PDF</a>
+    <a id="pptxDownloadLink" href="https://drive.google.com/your-pptx-file" target="_blank">Enlace PowerPoint</a>
+  -->
+</div>
+
 <script>
-  (function() {
+  (function(){
     const TOTAL_SLIDES = 12;
     let currentIdx = 0;
-    
-    const slideImg = document.getElementById('currentSlide');
+    let slidesData = []; // almacenará URLs de imágenes
+    let isLoading = false;
+    let preloadedImages = [];
+
+    const track = document.getElementById('slideTrack');
+    const loader = document.getElementById('loader');
     const counterEl = document.getElementById('counter');
     const headerIndicator = document.getElementById('headerSlideIndicator');
     const progressBar = document.getElementById('progressBar');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const fullBtn = document.getElementById('fullscreenBtn');
+    const gridBtn = document.getElementById('gridBtn');
+    const downloadSlideBtn = document.getElementById('downloadSlideBtn');
+    const thumbPanel = document.getElementById('thumbnailsPanel');
     
-    // Función para cargar imagen probando .png y .PNG
-    function setSlideImage(slideNumber) {
-      const basePath = 'img/slide-';
+    // Función para obtener URL de imagen (probando .png y .PNG)
+    function getImageUrl(slideNumber, callback) {
       const padded = slideNumber.toString().padStart(2, '0');
-      const urlPng = `${basePath}${padded}.png`;
-      const urlPngMayus = `${basePath}${padded}.PNG`;
-      
-      slideImg.style.opacity = '0.5';
+      const urlPng = `img/slide-${padded}.png`;
+      const urlPngMayus = `img/slide-${padded}.PNG`;
       
       const testImg = new Image();
-      testImg.onload = function() {
-        slideImg.src = urlPng;
-        slideImg.style.opacity = '1';
-      };
-      testImg.onerror = function() {
+      testImg.onload = () => callback(urlPng);
+      testImg.onerror = () => {
         const testImg2 = new Image();
-        testImg2.onload = function() {
-          slideImg.src = urlPngMayus;
-          slideImg.style.opacity = '1';
-        };
-        testImg2.onerror = function() {
-          slideImg.src = '';
-          slideImg.alt = `Imagen no encontrada: slide-${padded}.png / .PNG`;
-          slideImg.style.opacity = '1';
-          console.warn(`No se encontró la diapositiva ${padded}`);
-        };
+        testImg2.onload = () => callback(urlPngMayus);
+        testImg2.onerror = () => callback(null);
         testImg2.src = urlPngMayus;
       };
       testImg.src = urlPng;
     }
     
-    function updateDisplay(index) {
-      if (index < 0) index = TOTAL_SLIDES - 1;
-      if (index >= TOTAL_SLIDES) index = 0;
-      currentIdx = index;
-      const slideNum = currentIdx + 1;
-      
-      setSlideImage(slideNum);
-      
-      const counterText = `${slideNum} / ${TOTAL_SLIDES}`;
-      counterEl.textContent = counterText;
-      headerIndicator.textContent = counterText;
-      const percent = (slideNum / TOTAL_SLIDES) * 100;
-      progressBar.style.width = `${percent}%`;
-    }
-    
-    function nextSlide() { updateDisplay(currentIdx + 1); }
-    function prevSlide() { updateDisplay(currentIdx - 1); }
-    
-    prevBtn.addEventListener('click', (e) => { e.preventDefault(); prevSlide(); });
-    nextBtn.addEventListener('click', (e) => { e.preventDefault(); nextSlide(); });
-    
-    // Teclado
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-      else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
-      else if (e.key === 'Home') { e.preventDefault(); updateDisplay(0); }
-      else if (e.key === 'End') { e.preventDefault(); updateDisplay(TOTAL_SLIDES - 1); }
-    });
-    
-    // Pantalla completa mejorada (compatible con móviles)
-    function toggleFullscreen() {
-      const docEl = document.documentElement;
-      const requestFullscreen = docEl.requestFullscreen ||
-                                docEl.webkitRequestFullscreen ||
-                                docEl.mozRequestFullScreen ||
-                                docEl.msRequestFullscreen;
-      const exitFullscreen = document.exitFullscreen ||
-                             document.webkitExitFullscreen ||
-                             document.mozCancelFullScreen ||
-                             document.msExitFullscreen;
-      
-      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
-        if (requestFullscreen) {
-          requestFullscreen.call(docEl).catch(err => {
-            console.warn(`Error al entrar en pantalla completa: ${err.message}`);
-          });
-        }
-      } else {
-        if (exitFullscreen) {
-          exitFullscreen.call(document);
-        }
+    // Precargar todas las diapositivas al inicio
+    function preloadAllSlides(callback) {
+      let loaded = 0;
+      for (let i = 1; i <= TOTAL_SLIDES; i++) {
+        getImageUrl(i, (url) => {
+          slidesData[i-1] = url;
+          if (url) {
+            const img = new Image();
+            img.src = url;
+            preloadedImages.push(img);
+          }
+          loaded++;
+          if (loaded === TOTAL_SLIDES) callback();
+        });
       }
     }
     
-    fullBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      toggleFullscreen();
+    // Construir el track con todas las diapositivas (para deslizamiento)
+    function buildTrack() {
+      track.innerHTML = '';
+      for (let i = 0; i < TOTAL_SLIDES; i++) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'slide-wrapper';
+        const img = document.createElement('img');
+        img.className = 'slide';
+        img.alt = `Diapositiva ${i+1}`;
+        if (slidesData[i]) img.src = slidesData[i];
+        else img.src = '';
+        wrapper.appendChild(img);
+        track.appendChild(wrapper);
+      }
+      updateSlidePosition(false);
+    }
+    
+    function updateSlidePosition(animated = true) {
+      if (!animated) track.style.transition = 'none';
+      track.style.transform = `translateX(-${currentIdx * 100}%)`;
+      if (!animated) setTimeout(() => track.style.transition = '', 50);
+      
+      const slideNum = currentIdx + 1;
+      counterEl.textContent = `${slideNum} / ${TOTAL_SLIDES}`;
+      headerIndicator.textContent = `${slideNum} / ${TOTAL_SLIDES}`;
+      const percent = (slideNum / TOTAL_SLIDES) * 100;
+      progressBar.style.width = `${percent}%`;
+      
+      // Actualizar miniatura activa si el panel está abierto
+      document.querySelectorAll('.thumbnail').forEach((thumb, idx) => {
+        if (idx === currentIdx) thumb.classList.add('active-thumb');
+        else thumb.classList.remove('active-thumb');
+      });
+    }
+    
+    function goToSlide(index) {
+      if (isLoading) return;
+      if (index < 0) index = TOTAL_SLIDES - 1;
+      if (index >= TOTAL_SLIDES) index = 0;
+      if (index === currentIdx) return;
+      currentIdx = index;
+      updateSlidePosition(true);
+    }
+    
+    function nextSlide() { goToSlide(currentIdx + 1); }
+    function prevSlide() { goToSlide(currentIdx - 1); }
+    
+    // Generar panel de miniaturas
+    function buildThumbnails() {
+      thumbPanel.innerHTML = '';
+      for (let i = 0; i < TOTAL_SLIDES; i++) {
+        const thumb = document.createElement('img');
+        thumb.className = 'thumbnail';
+        thumb.src = slidesData[i] || '';
+        thumb.alt = `Miniatura ${i+1}`;
+        thumb.addEventListener('click', () => {
+          goToSlide(i);
+          thumbPanel.classList.remove('active');
+        });
+        thumbPanel.appendChild(thumb);
+      }
+    }
+    
+    // Descargar diapositiva actual como PNG
+    function downloadCurrentSlide() {
+      const currentImg = track.children[currentIdx]?.querySelector('img');
+      if (!currentImg || !currentImg.src) {
+        alert('No se pudo descargar la imagen');
+        return;
+      }
+      const link = document.createElement('a');
+      link.download = `diapositiva_${currentIdx+1}_nexus.png`;
+      link.href = currentImg.src;
+      link.click();
+    }
+    
+    // Pantalla completa mejorada
+    function toggleFullscreen() {
+      const docEl = document.documentElement;
+      const reqFull = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+      const exitFull = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+        if (reqFull) reqFull.call(docEl).catch(e => console.warn(e));
+      } else {
+        if (exitFull) exitFull.call(document);
+      }
+    }
+    
+    // Configurar enlaces de descarga externos (PDF y PPTX) - editar aquí
+    function setupExternalDownloads() {
+      // === CONFIGURACIÓN: Cambia las URLs por las de tus archivos en Google Drive ===
+      const PDF_URL = "#";   // <--- Coloca aquí el enlace de tu PDF
+      const PPTX_URL = "#";  // <--- Coloca aquí el enlace de tu PowerPoint
+      
+      const pdfLink = document.getElementById('pdfDownloadLink');
+      const pptxLink = document.getElementById('pptxDownloadLink');
+      if (pdfLink) pdfLink.href = PDF_URL;
+      if (pptxLink) pptxLink.href = PPTX_URL;
+      
+      // Opcional: añadir botones en la barra para descarga completa (puedes agregarlos si gustas)
+      // Por simplicidad, usamos los enlaces ocultos. Puedes mostrar botones adicionales si lo deseas.
+    }
+    
+    // Eventos y UI
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    fullBtn.addEventListener('click', toggleFullscreen);
+    downloadSlideBtn.addEventListener('click', downloadCurrentSlide);
+    gridBtn.addEventListener('click', () => {
+      thumbPanel.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+      if (!thumbPanel.contains(e.target) && e.target !== gridBtn) {
+        thumbPanel.classList.remove('active');
+      }
     });
     
-    // Doble tap en la imagen para pantalla completa (opcional)
-    slideImg.addEventListener('dblclick', (e) => {
-      e.preventDefault();
-      toggleFullscreen();
-    });
-    
-    // Swipe táctil para cambiar diapositivas
+    // Swipe táctil
     let touchStartX = 0;
     let touchStartY = 0;
     document.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
     }, {passive: true});
-    
     document.addEventListener('touchend', (e) => {
       const deltaX = e.changedTouches[0].screenX - touchStartX;
       const deltaY = e.changedTouches[0].screenY;
-      // Si el desplazamiento horizontal es mayor que vertical y > 50px, cambia slide
       if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
         deltaX < 0 ? nextSlide() : prevSlide();
       }
     });
     
-    // Inicializar
-    updateDisplay(0);
+    // Teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(TOTAL_SLIDES-1); }
+      else if (e.key === 'f' || e.key === 'F') { toggleFullscreen(); }
+    });
+    
+    // Inicialización
+    preloadAllSlides(() => {
+      buildTrack();
+      buildThumbnails();
+      updateSlidePosition(false);
+      setupExternalDownloads();
+    });
+    
+    // Forzar zoom táctil: añadir atributo extra al body (ya está en meta)
+    // Además, cada slide-wrapper tiene touch-action: pinch-zoom
   })();
 </script>
 </body>
