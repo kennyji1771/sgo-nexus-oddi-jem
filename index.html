@@ -1,339 +1,348 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>SGO Nexus · Presentación Corporativa</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>SGO/P · NEXUS · Órgano Defensa Integral Parroquia Catedral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: #0A0C12;
-            color: #FFFFFF;
-            height: 100vh;
-            overflow: hidden;
-            background-image: radial-gradient(circle at 25% 40%, rgba(0, 163, 255, 0.08) 0%, transparent 65%);
-        }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0A0C12;
+      color: #FFFFFF;
+      height: 100vh;
+      overflow: hidden;
+      background-image: radial-gradient(circle at 25% 40%, rgba(0, 163, 255, 0.08) 0%, transparent 65%);
+    }
 
-        /* Header Nexus */
-        .nexus-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 50;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 24px;
-            background: rgba(8, 12, 20, 0.75);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 163, 255, 0.4);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        }
+    .nexus-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 163, 255, 0.4);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
-        .logo-icon {
-            background: linear-gradient(135deg, #00A3FF, #0059B3);
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 18px;
-            box-shadow: 0 0 15px rgba(0, 163, 255, 0.5);
-        }
+    .nexus-logo {
+      height: 38px;
+      width: auto;
+      filter: drop-shadow(0 0 6px rgba(0, 163, 255, 0.4));
+    }
 
-        .presentation-title {
-            font-weight: 500;
-            font-size: 1rem;
-            letter-spacing: 0.3px;
-            color: #E0E0E0;
-            border-left: 1px solid rgba(255,255,255,0.2);
-            padding-left: 16px;
-        }
+    .presentation-title {
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.2px;
+      color: #E0E0E0;
+      border-left: 1px solid rgba(255,255,255,0.2);
+      padding-left: 16px;
+      line-height: 1.3;
+    }
 
-        .slide-indicator {
-            background: rgba(0, 163, 255, 0.2);
-            padding: 6px 14px;
-            border-radius: 30px;
-            border: 1px solid rgba(0, 163, 255, 0.5);
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #B0D4F0;
-        }
+    .presentation-title small {
+      font-size: 0.75rem;
+      color: #80C0E0;
+      display: block;
+    }
 
-        /* Contenedor Principal */
-        .presentation-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            padding-top: 70px;
-            padding-bottom: 90px;
-        }
+    .slide-indicator {
+      background: rgba(0, 163, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(0, 163, 255, 0.5);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #B0D4F0;
+    }
 
-        .slide-wrapper {
-            width: 90%;
-            height: 85%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #11141C;
-            border-radius: 24px;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(0, 163, 255, 0.25);
-            overflow: hidden;
-        }
+    .presentation-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding-top: 70px;
+      padding-bottom: 90px;
+    }
 
-        .slide {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            background: #0F1119;
-            transition: opacity 0.2s ease;
-        }
+    .slide-wrapper {
+      width: 90%;
+      height: 85%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #11141C;
+      border-radius: 24px;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(0, 163, 255, 0.25);
+      overflow: hidden;
+    }
 
-        /* Progress Bar */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #00A3FF, #7EC8FF);
-            z-index: 100;
-            box-shadow: 0 0 10px #00A3FF;
-            transition: width 0.2s ease-out;
-        }
+    .slide {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      background: #0F1119;
+      transition: opacity 0.2s ease;
+    }
 
-        /* Controles */
-        .nav-controls {
-            position: fixed;
-            bottom: 28px;
-            left: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 28px;
-            z-index: 40;
-        }
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, #00A3FF, #7EC8FF);
+      z-index: 100;
+      box-shadow: 0 0 10px #00A3FF;
+      transition: width 0.2s ease-out;
+    }
 
-        .nav-btn {
-            background: rgba(12, 20, 30, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 163, 255, 0.5);
-            color: white;
-            width: 52px;
-            height: 52px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 400;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-        }
+    .nav-controls {
+      position: fixed;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      z-index: 40;
+    }
 
-        .nav-btn:hover {
-            background: #00A3FF;
-            border-color: #00A3FF;
-            transform: scale(1.05);
-            color: #0B0E14;
-        }
+    .nav-btn {
+      background: rgba(12, 20, 30, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 163, 255, 0.5);
+      color: white;
+      width: 52px;
+      height: 52px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 400;
+      cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+    }
 
-        .counter {
-            background: rgba(8, 12, 20, 0.8);
-            backdrop-filter: blur(12px);
-            padding: 8px 26px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            border: 1px solid rgba(0, 163, 255, 0.4);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.3);
-        }
+    .nav-btn:hover {
+      background: #00A3FF;
+      border-color: #00A3FF;
+      transform: scale(1.05);
+      color: #0B0E14;
+    }
 
-        .fullscreen-btn {
-            position: fixed;
-            top: 80px;
-            right: 24px;
-            z-index: 60;
-            background: rgba(12, 20, 30, 0.7);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 163, 255, 0.4);
-            color: #D0E5FF;
-            width: 44px;
-            height: 44px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+    .counter {
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 8px 26px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border: 1px solid rgba(0, 163, 255, 0.4);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+    }
 
-        .fullscreen-btn:hover {
-            background: #00A3FF;
-            color: #0B0E14;
-        }
+    .fullscreen-btn {
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      z-index: 60;
+      background: rgba(12, 20, 30, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 163, 255, 0.4);
+      color: #D0E5FF;
+      width: 44px;
+      height: 44px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
 
-        .nexus-footer {
-            position: fixed;
-            bottom: 16px;
-            left: 24px;
-            z-index: 35;
-            color: rgba(180, 210, 240, 0.5);
-            font-size: 0.75rem;
-            font-weight: 400;
-            letter-spacing: 0.5px;
-        }
+    .fullscreen-btn:hover {
+      background: #00A3FF;
+      color: #0B0E14;
+    }
 
-        @media (max-width: 600px) {
-            .nav-btn { width: 46px; height: 46px; font-size: 24px; }
-            .counter { padding: 6px 18px; font-size: 0.9rem; }
-            .fullscreen-btn { top: 70px; right: 16px; }
-            .slide-wrapper { width: 95%; }
-        }
-    </style>
+    .nexus-footer {
+      position: fixed;
+      bottom: 16px;
+      left: 24px;
+      z-index: 35;
+      color: rgba(180, 210, 240, 0.6);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      background: rgba(0,0,0,0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .nexus-header { padding: 8px 16px; }
+      .nexus-logo { height: 30px; }
+      .presentation-title { font-size: 0.8rem; }
+      .nav-btn { width: 46px; height: 46px; font-size: 24px; }
+      .counter { padding: 6px 18px; font-size: 0.9rem; }
+      .fullscreen-btn { top: 70px; right: 16px; }
+      .slide-wrapper { width: 95%; }
+    }
+  </style>
 </head>
 <body>
 
 <div class="progress-bar" id="progressBar"></div>
 
 <header class="nexus-header">
-    <div class="header-left">
-        <div class="logo-icon">⚡</div>
-        <span class="presentation-title">NEXUS · Sistema de Gestión Universal</span>
+  <div class="header-left">
+    <img class="nexus-logo" src="img/nexus-logo.png" alt="NEXUS - Órgano Defensa Integral">
+    <div class="presentation-title">
+      SGO/P · NEXUS
+      <small>Órgano de Defensa Integral · Parroquia Catedral</small>
     </div>
-    <div class="header-right">
-        <span class="slide-indicator" id="headerSlideIndicator">1 / 12</span>
-    </div>
+  </div>
+  <div class="header-right">
+    <span class="slide-indicator" id="headerSlideIndicator">1 / 12</span>
+  </div>
 </header>
 
 <div class="fullscreen-btn" id="fullscreenBtn" title="Pantalla completa">⛶</div>
 
 <div class="presentation-container">
-    <div class="slide-wrapper">
-        <img class="slide" id="currentSlide" alt="Presentación SGO/P">
-    </div>
+  <div class="slide-wrapper">
+    <img class="slide" id="currentSlide" alt="Diapositiva SGO/P">
+  </div>
 </div>
 
 <div class="nav-controls">
-    <div class="nav-btn" id="prevBtn">◀</div>
-    <div class="counter" id="counter">1 / 12</div>
-    <div class="nav-btn" id="nextBtn">▶</div>
+  <div class="nav-btn" id="prevBtn">◀</div>
+  <div class="counter" id="counter">1 / 12</div>
+  <div class="nav-btn" id="nextBtn">▶</div>
 </div>
 
-<div class="nexus-footer">NEXUS · Innovación en Gobernanza de Proyectos</div>
+<div class="nexus-footer">NEXUS · Innovación en Gobernanza de Proyectos · ODI Parroquia Catedral</div>
 
 <script>
-    (function(){
-        // *** CONFIGURACIÓN: 12 DIAPOSITIVAS ***
-        const TOTAL_SLIDES = 12;
-        let currentIdx = 0;
-        
-        // Elementos
-        const slideImg = document.getElementById('currentSlide');
-        const counterEl = document.getElementById('counter');
-        const headerIndicator = document.getElementById('headerSlideIndicator');
-        const progressBar = document.getElementById('progressBar');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const fullBtn = document.getElementById('fullscreenBtn');
-
-        // Función para obtener una imagen placeholder de alta calidad (Placehold.co)
-        // Usamos Placehold.co que es gratuito y estable
-        function getPlaceholderImage(slideNumber, total) {
-            // Colores distintivos y textos para cada diapositiva (Efecto visual profesional)
-            const titles = [
-                "PLAN ESTRATÉGICO", "VISIÓN OPERACIONAL", "ARQUITECTURA DE DATOS",
-                "SEGURIDAD Y CONTROL", "DESPLIEGUE TÁCTICO", "INTELIGENCIA APLICADA",
-                "LOGÍSTICA AVANZADA", "COMUNICACIONES", "COORDINACIÓN COMUNITARIA",
-                "INNOVACIÓN TECNOLÓGICA", "EJECUCIÓN Y MÉTRICAS", "FUTURO NEXUS"
-            ];
-            const themeColor = `00A3FF`; // Color azul NEXUS
-            const bgColor = `1A1F2E`;
-            const title = titles[slideNumber - 1];
-            
-            // Placehold.co permite personalizar texto, colores y tamaño
-            // Fondo: gris oscuro, Texto: azul brillante
-            // Usamos formato URL: https://placehold.co/1280x720/HEX_FONDO/HEX_TEXTO?text=Texto
-            const encodedTitle = encodeURIComponent(title);
-            // Tamaño fijo para una buena resolución
-            return `https://placehold.co/1280x720/${bgColor}/${themeColor}?text=NEXUS%20-%20${encodedTitle}&font=montserrat`;
-        }
-
-        function updateDisplay(index) {
-            // Corrección circular
-            if (index < 0) index = TOTAL_SLIDES - 1;
-            if (index >= TOTAL_SLIDES) index = 0;
-            currentIdx = index;
-            const slideNum = currentIdx + 1;
-            
-            // Generar imagen placeholder para la diapositiva actual
-            const imgUrl = getPlaceholderImage(slideNum, TOTAL_SLIDES);
-            slideImg.src = imgUrl;
-            slideImg.alt = `Diapositiva ${slideNum}: Estrategia SGO/P`;
-            
-            // Actualizar contadores y barra
-            const textCounter = `${slideNum} / ${TOTAL_SLIDES}`;
-            counterEl.textContent = textCounter;
-            headerIndicator.textContent = textCounter;
-            const percent = (slideNum / TOTAL_SLIDES) * 100;
-            progressBar.style.width = `${percent}%`;
-        }
-
-        // Navegación
-        const nextSlide = () => updateDisplay(currentIdx + 1);
-        const prevSlide = () => updateDisplay(currentIdx - 1);
-        
-        // Eventos
-        prevBtn.addEventListener('click', (e) => { e.preventDefault(); prevSlide(); });
-        nextBtn.addEventListener('click', (e) => { e.preventDefault(); nextSlide(); });
-        
-        // Teclado
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-            else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
-            else if (e.key === 'Home') { e.preventDefault(); updateDisplay(0); }
-            else if (e.key === 'End') { e.preventDefault(); updateDisplay(TOTAL_SLIDES - 1); }
-        });
-        
-        // Pantalla completa
-        fullBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-            else document.exitFullscreen();
-        });
-        
-        // Soporte táctil
-        let touchX = 0;
-        document.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].screenX; }, {passive: true});
-        document.addEventListener('touchend', (e) => {
-            const diff = e.changedTouches[0].screenX - touchX;
-            if (Math.abs(diff) > 50) diff < 0 ? nextSlide() : prevSlide();
-        });
-        
-        // Inicializar
-        updateDisplay(0);
-    })();
+  (function() {
+    const TOTAL_SLIDES = 12;
+    let currentIdx = 0;
+    
+    const slideImg = document.getElementById('currentSlide');
+    const counterEl = document.getElementById('counter');
+    const headerIndicator = document.getElementById('headerSlideIndicator');
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fullBtn = document.getElementById('fullscreenBtn');
+    
+    // Función para cargar imagen probando .png y .PNG
+    function setSlideImage(slideNumber) {
+      const basePath = 'img/slide-';
+      const padded = slideNumber.toString().padStart(2, '0');
+      const urlPng = `${basePath}${padded}.png`;
+      const urlPngMayus = `${basePath}${padded}.PNG`;
+      
+      // Reiniciar imagen con un estado de carga
+      slideImg.style.opacity = '0.5';
+      
+      // Crear un objeto Image para probar si existe .png primero
+      const testImg = new Image();
+      testImg.onload = function() {
+        slideImg.src = urlPng;
+        slideImg.style.opacity = '1';
+      };
+      testImg.onerror = function() {
+        // Si falla .png, probar .PNG
+        const testImg2 = new Image();
+        testImg2.onload = function() {
+          slideImg.src = urlPngMayus;
+          slideImg.style.opacity = '1';
+        };
+        testImg2.onerror = function() {
+          // Si ninguna existe, mostrar mensaje de error visual
+          slideImg.src = '';
+          slideImg.alt = `Imagen no encontrada: slide-${padded}.png / .PNG`;
+          slideImg.style.opacity = '1';
+          console.warn(`No se encontró la diapositiva ${padded}`);
+        };
+        testImg2.src = urlPngMayus;
+      };
+      testImg.src = urlPng;
+    }
+    
+    function updateDisplay(index) {
+      if (index < 0) index = TOTAL_SLIDES - 1;
+      if (index >= TOTAL_SLIDES) index = 0;
+      currentIdx = index;
+      const slideNum = currentIdx + 1;
+      
+      setSlideImage(slideNum);
+      
+      const counterText = `${slideNum} / ${TOTAL_SLIDES}`;
+      counterEl.textContent = counterText;
+      headerIndicator.textContent = counterText;
+      const percent = (slideNum / TOTAL_SLIDES) * 100;
+      progressBar.style.width = `${percent}%`;
+    }
+    
+    function nextSlide() { updateDisplay(currentIdx + 1); }
+    function prevSlide() { updateDisplay(currentIdx - 1); }
+    
+    prevBtn.addEventListener('click', (e) => { e.preventDefault(); prevSlide(); });
+    nextBtn.addEventListener('click', (e) => { e.preventDefault(); nextSlide(); });
+    
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); updateDisplay(0); }
+      else if (e.key === 'End') { e.preventDefault(); updateDisplay(TOTAL_SLIDES - 1); }
+    });
+    
+    fullBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    });
+    
+    // Swipe táctil
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+    document.addEventListener('touchend', (e) => {
+      const diff = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(diff) > 50) diff < 0 ? nextSlide() : prevSlide();
+    });
+    
+    // Inicializar
+    updateDisplay(0);
+  })();
 </script>
 </body>
 </html>
