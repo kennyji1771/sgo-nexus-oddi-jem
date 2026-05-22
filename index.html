@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <!-- user-scalable eliminado para permitir zoom -->
   <title>SGO/P · NEXUS · Órgano Defensa Integral Parroquia Catedral</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +22,7 @@
       height: 100vh;
       overflow: hidden;
       background-image: radial-gradient(circle at 25% 40%, rgba(0, 163, 255, 0.08) 0%, transparent 65%);
+      touch-action: pan-x pan-y; /* permite scroll pero no impide zoom manual */
     }
 
     .nexus-header {
@@ -85,6 +87,8 @@
       height: 100vh;
       padding-top: 70px;
       padding-bottom: 90px;
+      overflow: auto; /* permite scroll si la imagen es enorme, pero el zoom funciona */
+      -webkit-overflow-scrolling: touch;
     }
 
     .slide-wrapper {
@@ -97,15 +101,20 @@
       border-radius: 24px;
       box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.8);
       border: 1px solid rgba(0, 163, 255, 0.25);
-      overflow: hidden;
+      overflow: auto; /* permitir scroll/zoom */
+      touch-action: pinch-zoom; /* explícitamente permitir zoom con pellizco */
     }
 
     .slide {
       max-width: 100%;
       max-height: 100%;
+      width: auto;
+      height: auto;
       object-fit: contain;
       background: #0F1119;
       transition: opacity 0.2s ease;
+      /* permitir que la imagen se pueda escalar con gestos nativos del navegador */
+      touch-action: pinch-zoom;
     }
 
     .progress-bar {
@@ -148,6 +157,7 @@
       cursor: pointer;
       transition: 0.2s;
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+      touch-action: manipulation; /* mejora respuesta táctil */
     }
 
     .nav-btn:hover {
@@ -166,6 +176,7 @@
       font-size: 1.1rem;
       border: 1px solid rgba(0, 163, 255, 0.4);
       box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+      user-select: none;
     }
 
     .fullscreen-btn {
@@ -186,6 +197,7 @@
       font-size: 22px;
       cursor: pointer;
       transition: 0.2s;
+      touch-action: manipulation;
     }
 
     .fullscreen-btn:hover {
@@ -205,8 +217,10 @@
       background: rgba(0,0,0,0.3);
       padding: 4px 12px;
       border-radius: 20px;
+      pointer-events: none;
     }
 
+    /* Ajustes responsivos */
     @media (max-width: 600px) {
       .nexus-header { padding: 8px 16px; }
       .nexus-logo { height: 30px; }
@@ -249,7 +263,7 @@
   <div class="nav-btn" id="nextBtn">▶</div>
 </div>
 
-<div class="nexus-footer">NEXUS · Innovación en Gobernanza de Proyectos · ODDI Parroquia Catedral</div>
+<div class="nexus-footer">NEXUS · Innovación en Gobernanza de Proyectos · ODI Parroquia Catedral</div>
 
 <script>
   (function() {
@@ -271,24 +285,20 @@
       const urlPng = `${basePath}${padded}.png`;
       const urlPngMayus = `${basePath}${padded}.PNG`;
       
-      // Reiniciar imagen con un estado de carga
       slideImg.style.opacity = '0.5';
       
-      // Crear un objeto Image para probar si existe .png primero
       const testImg = new Image();
       testImg.onload = function() {
         slideImg.src = urlPng;
         slideImg.style.opacity = '1';
       };
       testImg.onerror = function() {
-        // Si falla .png, probar .PNG
         const testImg2 = new Image();
         testImg2.onload = function() {
           slideImg.src = urlPngMayus;
           slideImg.style.opacity = '1';
         };
         testImg2.onerror = function() {
-          // Si ninguna existe, mostrar mensaje de error visual
           slideImg.src = '';
           slideImg.alt = `Imagen no encontrada: slide-${padded}.png / .PNG`;
           slideImg.style.opacity = '1';
@@ -320,6 +330,7 @@
     prevBtn.addEventListener('click', (e) => { e.preventDefault(); prevSlide(); });
     nextBtn.addEventListener('click', (e) => { e.preventDefault(); nextSlide(); });
     
+    // Teclado
     window.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
@@ -327,17 +338,57 @@
       else if (e.key === 'End') { e.preventDefault(); updateDisplay(TOTAL_SLIDES - 1); }
     });
     
-    fullBtn.addEventListener('click', () => {
-      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-      else document.exitFullscreen();
+    // Pantalla completa mejorada (compatible con móviles)
+    function toggleFullscreen() {
+      const docEl = document.documentElement;
+      const requestFullscreen = docEl.requestFullscreen ||
+                                docEl.webkitRequestFullscreen ||
+                                docEl.mozRequestFullScreen ||
+                                docEl.msRequestFullscreen;
+      const exitFullscreen = document.exitFullscreen ||
+                             document.webkitExitFullscreen ||
+                             document.mozCancelFullScreen ||
+                             document.msExitFullscreen;
+      
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+        if (requestFullscreen) {
+          requestFullscreen.call(docEl).catch(err => {
+            console.warn(`Error al entrar en pantalla completa: ${err.message}`);
+          });
+        }
+      } else {
+        if (exitFullscreen) {
+          exitFullscreen.call(document);
+        }
+      }
+    }
+    
+    fullBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleFullscreen();
     });
     
-    // Swipe táctil
+    // Doble tap en la imagen para pantalla completa (opcional)
+    slideImg.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      toggleFullscreen();
+    });
+    
+    // Swipe táctil para cambiar diapositivas
     let touchStartX = 0;
-    document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+    let touchStartY = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, {passive: true});
+    
     document.addEventListener('touchend', (e) => {
-      const diff = e.changedTouches[0].screenX - touchStartX;
-      if (Math.abs(diff) > 50) diff < 0 ? nextSlide() : prevSlide();
+      const deltaX = e.changedTouches[0].screenX - touchStartX;
+      const deltaY = e.changedTouches[0].screenY;
+      // Si el desplazamiento horizontal es mayor que vertical y > 50px, cambia slide
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+        deltaX < 0 ? nextSlide() : prevSlide();
+      }
     });
     
     // Inicializar
